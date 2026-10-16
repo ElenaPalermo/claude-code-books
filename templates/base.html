@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Книжная полка{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500;600&display=swap&subset=cyrillic" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="/" class="logo">
+                <span class="logo-mark">❦</span>
+                <span>Книжная полка</span>
+            </a>
+            <nav class="nav">
+                <a href="/" class="nav-link">Все книги</a>
+                <a href="/about" class="nav-link">О нас</a>
+                <a href="/books/new" class="btn-add" aria-label="Добавить книгу" title="Добавить книгу">
+                    <span class="btn-add-icon" aria-hidden="true">
+                        <svg viewBox="0 0 16 16" width="12" height="12"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+                    </span>
+                    <span class="btn-add-text">Добавить книгу</span>
+                </a>
+                {% if current_user %}
+                <div class="user-menu">
+                    {% if current_user.picture %}
+                    <img class="avatar" src="{{ current_user.picture }}" alt="" referrerpolicy="no-referrer"
+                         title="{{ current_user.name }} · {{ current_user.email }}">
+                    {% else %}
+                    <span class="avatar avatar-initial" title="{{ current_user.name }} · {{ current_user.email }}">{{ (current_user.name or current_user.email or "?")[0]|upper }}</span>
+                    {% endif %}
+                    <form method="post" action="/logout">
+                        <button class="btn-logout" type="submit" title="Выйти" aria-label="Выйти">
+                            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 2.5H3.5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1H6M10.5 11 13.5 8l-3-3M13.5 8H6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                    </form>
+                </div>
+                {% else %}
+                <a href="/login" class="nav-login">Войти</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <nav class="footer-nav">
+                <a href="/">Все книги</a>
+                <a href="/about">О нас</a>
+                <a href="/books/new">Добавить книгу</a>
+                {% if current_user %}
+                <form method="post" action="/logout"><button type="submit">Выйти</button></form>
+                {% else %}
+                <a href="/login">Войти</a>
+                {% endif %}
+            </nav>
+            <p>Книжная полка · блог о прочитанном</p>
+        </div>
+    </footer>
+</body>
+</html>

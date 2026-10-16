@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}{% set is_new = book.id is none %}{{ 'Новая книга' if is_new else 'Редактирование: ' ~ book.title }} — Книжная полка{% endblock %}
+
+{% block content %}
+{% set is_new = book.id is none %}
+<a href="{{ '/' if is_new else '/books/' ~ book.id }}" class="back">← {{ 'Все книги' if is_new else 'К книге' }}</a>
+
+<div class="form-card">
+    <p class="eyebrow">{{ 'Новая запись' if is_new else 'Редактирование' }}</p>
+    <h1>{{ 'Добавить книгу' if is_new else book.title }}</h1>
+
+    <form method="post" action="{{ '/books/new' if is_new else '/books/' ~ book.id ~ '/edit' }}" class="form" novalidate>
+        <div class="field {{ 'has-error' if errors.title }}">
+            <label for="title">Название *</label>
+            <input class="input" id="title" name="title" value="{{ book.title or '' }}" required autofocus>
+            {% if errors.title %}<p class="error">{{ errors.title }}</p>{% endif %}
+        </div>
+
+        <div class="field {{ 'has-error' if errors.author }}">
+            <label for="author">Автор *</label>
+            <input class="input" id="author" name="author" value="{{ book.author or '' }}" required>
+            {% if errors.author %}<p class="error">{{ errors.author }}</p>{% endif %}
+        </div>
+
+        <div class="row">
+            <div class="field {{ 'has-error' if errors.year }}">
+                <label for="year">Год издания</label>
+                <input class="input" id="year" name="year" inputmode="numeric" value="{{ book.year if book.year is not none else '' }}">
+                {% if errors.year %}<p class="error">{{ errors.year }}</p>{% endif %}
+            </div>
+            <div class="field">
+                <label for="genre">Жанр</label>
+                <input class="input" id="genre" name="genre" list="genres" value="{{ book.genre or '' }}">
+                <datalist id="genres">
+                    {% for g in genres %}<option value="{{ g }}">{% endfor %}
+                </datalist>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Оценка</label>
+            <div class="rating-input">
+                {% for i in range(5, 0, -1) %}
+                <input type="radio" id="r{{ i }}" name="rating" value="{{ i }}" {{ 'checked' if (book.rating or 0) == i }}>
+                <label for="r{{ i }}" title="{{ i }} из 5">★</label>
+                {% endfor %}
+            </div>
+            {% if errors.rating %}<p class="error">{{ errors.rating }}</p>{% endif %}
+        </div>
+
+        <div class="field">
+            <label for="description">Описание и впечатления</label>
+            <textarea class="input" id="description" name="description" rows="8"
+                      placeholder="О чём книга и чем она запомнилась…">{{ book.description or '' }}</textarea>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" type="submit">{{ 'Добавить' if is_new else 'Сохранить изменения' }}</button>
+            <a class="btn btn-ghost" href="{{ '/' if is_new else '/books/' ~ book.id }}">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

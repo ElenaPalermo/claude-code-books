@@ -1,0 +1,14 @@
+{% macro cover(book, size="") %}
+<div class="cover {{ size }}" style="--hue: {{ (book.id * 47) % 360 }}">
+    <span class="cover-title">{{ book.title }}</span>
+    <span class="cover-author">{{ book.author }}</span>
+</div>
+{% endmacro %}
+
+{% macro stars(rating) %}
+<span class="stars" aria-label="Оценка {{ rating }} из 5">
+    {%- for i in range(5) -%}
+    <span class="star {{ 'on' if i < rating }}">★</span>
+    {%- endfor -%}
+</span>
+{% endmacro %}

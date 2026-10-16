@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cover, stars %}
+
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">Блог о книгах</p>
+    <h1>Истории, которые<br><em>стоит прочитать</em></h1>
+    <p class="lead">Заметки о прочитанных книгах, впечатления и оценки — всё в одном месте.</p>
+</section>
+
+<form class="toolbar" method="get" action="/">
+    <input class="input search" type="search" name="q" value="{{ q }}" placeholder="Поиск по названию или автору…">
+    <select class="input" name="genre" onchange="this.form.submit()">
+        <option value="">Все жанры</option>
+        {% for g in genres %}
+        <option value="{{ g }}" {{ 'selected' if g == genre }}>{{ g }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-ghost" type="submit">Найти</button>
+    {% if q or genre %}<a class="btn btn-link" href="/">Сбросить</a>{% endif %}
+</form>
+
+{% if books %}
+<p class="count">Книг на полке: {{ books|length }}</p>
+<div class="grid">
+    {% for book in books %}
+    <article class="card">
+        <a href="/books/{{ book.id }}" class="card-link">
+            {{ cover(book) }}
+            <div class="card-body">
+                <div class="card-meta">
+                    {% if book.genre %}<span class="tag">{{ book.genre }}</span>{% endif %}
+                    {% if book.year %}<span class="muted">{{ book.year }}</span>{% endif %}
+                </div>
+                <h2 class="card-title">{{ book.title }}</h2>
+                <p class="card-author">{{ book.author }}</p>
+                {% if book.description %}
+                <p class="card-excerpt">{{ book.description|truncate(120) }}</p>
+                {% endif %}
+                <div class="card-footer">
+                    {{ stars(book.rating) }}
+                    <span class="read-more">Читать →</span>
+                </div>
+            </div>
+        </a>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty">
+    <p class="empty-icon">📚</p>
+    <h2>Здесь пока пусто</h2>
+    <p class="muted">{% if q or genre %}По вашему запросу ничего не найдено.{% else %}Добавьте первую книгу на полку.{% endif %}</p>
+    <a href="/books/new" class="btn btn-primary">Добавить книгу</a>
+</div>
+{% endif %}
+{% endblock %}

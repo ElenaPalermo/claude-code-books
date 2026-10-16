@@ -1,0 +1,13 @@
+# Секреты
+.env
+
+# База данных (создаётся при первом запуске)
+books.db
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Локальные настройки Claude Code
+.claude/settings.local.json

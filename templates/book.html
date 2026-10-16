@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cover, stars %}
+
+{% block title %}{{ book.title }} — Книжная полка{% endblock %}
+
+{% block content %}
+{% if saved %}
+<div class="toast">✓ Изменения сохранены</div>
+{% endif %}
+
+<a href="/" class="back">← Все книги</a>
+
+<article class="book">
+    <aside class="book-aside">
+        {{ cover(book, "cover-lg") }}
+        <dl class="facts">
+            <div><dt>Автор</dt><dd>{{ book.author }}</dd></div>
+            {% if book.year %}<div><dt>Год</dt><dd>{{ book.year }}</dd></div>{% endif %}
+            {% if book.genre %}<div><dt>Жанр</dt><dd>{{ book.genre }}</dd></div>{% endif %}
+            <div><dt>Оценка</dt><dd>{{ stars(book.rating) }}</dd></div>
+        </dl>
+    </aside>
+
+    <div class="book-main">
+        {% if book.genre %}<p class="eyebrow">{{ book.genre }}</p>{% endif %}
+        <h1 class="book-title">{{ book.title }}</h1>
+        <p class="book-author">{{ book.author }}{% if book.year %}, {{ book.year }}{% endif %}</p>
+
+        <div class="prose">
+            {% for p in book.description.split('\n') if p.strip() %}
+            <p>{{ p }}</p>
+            {% else %}
+            <p class="muted">Описание пока не добавлено.</p>
+            {% endfor %}
+        </div>
+
+        <p class="dates muted">
+            Добавлено {{ book.created_at|ru_date }}
+            {% if book.updated_at != book.created_at %} · обновлено {{ book.updated_at|ru_date }}{% endif %}
+        </p>
+
+        {% if current_user %}
+        <div class="actions">
+            <a href="/books/{{ book.id }}/edit" class="btn btn-primary">Редактировать</a>
+            <form method="post" action="/books/{{ book.id }}/delete"
+                  onsubmit='return confirm({{ ("Удалить книгу «" ~ book.title ~ "»?")|tojson }});'>
+                <button class="btn btn-danger" type="submit">Удалить</button>
+            </form>
+        </div>
+        {% else %}
+        <p class="muted guest-hint">
+            <a href="/login?next=/books/{{ book.id }}">Войдите</a>, чтобы редактировать эту книгу.
+        </p>
+        {% endif %}
+    </div>
+</article>
+{% endblock %}

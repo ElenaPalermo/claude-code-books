@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}О нас — Книжная полка{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">О компании</p>
+    <h1>Мы любим книги<br><em>и людей, которые их читают</em></h1>
+    <p class="lead">«Книжная полка» — небольшая команда читателей, которая делится честными впечатлениями о прочитанном и помогает найти следующую любимую книгу.</p>
+</section>
+
+<section class="stats">
+    <div class="stat">
+        <span class="stat-value">{{ stats.books }}</span>
+        <span class="stat-label">книг на полке</span>
+    </div>
+    <div class="stat">
+        <span class="stat-value">{{ stats.authors }}</span>
+        <span class="stat-label">авторов</span>
+    </div>
+    <div class="stat">
+        <span class="stat-value">{{ stats.genres }}</span>
+        <span class="stat-label">жанров</span>
+    </div>
+</section>
+
+<section class="about-story">
+    <div>
+        <p class="eyebrow">Наша история</p>
+        <h2>С одной полки — к целому блогу</h2>
+    </div>
+    <div class="prose">
+        <p>Всё началось с книжной полки в гостиной и бесконечных споров о том, что почитать дальше. Мы стали записывать впечатления, ставить оценки и делиться заметками с друзьями.</p>
+        <p>Сегодня «Книжная полка» — это блог, где классика соседствует с фантастикой, а каждая рецензия написана человеком, который действительно прочитал книгу от первой до последней страницы.</p>
+    </div>
+</section>
+
+<section class="values">
+    <p class="eyebrow">Во что мы верим</p>
+    <h2>Наши принципы</h2>
+    <div class="values-grid">
+        <article class="value">
+            <span class="value-icon">¶</span>
+            <h3>Честность</h3>
+            <p class="muted">Пишем только о том, что прочитали сами, и не стесняемся ставить три звезды.</p>
+        </article>
+        <article class="value">
+            <span class="value-icon">❦</span>
+            <h3>Разнообразие</h3>
+            <p class="muted">Классика, фантастика, сказки и магический реализм — хорошей книге не нужен определённый жанр.</p>
+        </article>
+        <article class="value">
+            <span class="value-icon">✶</span>
+            <h3>Без снобизма</h3>
+            <p class="muted">Чтение — это удовольствие, а не экзамен. Рассказываем о книгах простым языком.</p>
+        </article>
+    </div>
+</section>
+
+<section class="cta">
+    <h2>Есть книга, о которой хочется рассказать?</h2>
+    <p class="muted">Добавьте её на полку — с описанием, впечатлениями и оценкой.</p>
+    <div class="actions">
+        <a href="/books/new" class="btn btn-primary">Добавить книгу</a>
+        <a href="/" class="btn btn-ghost">Смотреть все книги</a>
+    </div>
+</section>
+{% endblock %}
